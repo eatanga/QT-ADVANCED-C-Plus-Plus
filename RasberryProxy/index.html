@@ -1,0 +1,34 @@
+<html>
+    <h3 style='color:red; padding:14px 16px; letter-spacing:6px'>
+        Raspberry Pi Project
+    </h3>
+    This is a Raspbery Pi Server Project<br/>
+    <textarea id='console' rows='60' cols='120' style='background-color:black; color:white' onkeypress='keyPressed(event)'>
+    </textarea>
+    <script>
+        setInterval(function(){ checkForUpdate() }, 2000);
+
+        function keyPressed(evt) {
+            console.log('keyPressed sending: ' + String.fromCharCode(evt.keyCode));
+            var xhttp = new XMLHttpRequest();
+            xhttp.open('POST', 'command', true);
+            xhttp.send(String.fromCharCode(evt.keyCode));
+            xhttp.onload = function (e) {
+                console.log('keyPressed reponse: ' + xhttp.response);
+            }
+        }
+
+        function checkForUpdate() {
+            var xhttp = new XMLHttpRequest();
+            xhttp.open('GET', 'checkforupdates', true);
+            xhttp.send();
+            xhttp.onload = function(e) {
+                console.log('checkForUpdate reponse: ' + xhttp.response);
+                console.log(xhttp.response);
+                if (xhttp.response != "") {
+                    document.getElementById("console").value += xhttp.response;
+                }
+            }
+        }
+    </script>
+</html>
